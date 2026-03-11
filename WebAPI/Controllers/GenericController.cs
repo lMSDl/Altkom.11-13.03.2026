@@ -13,11 +13,6 @@ namespace WebAPI.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<T>>> Get()
-        {
-            return Ok(await _service.ReadAsync());
-        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> GetById(int id)
@@ -29,14 +24,6 @@ namespace WebAPI.Controllers
             return Ok(entity);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> Add(T entity)
-        //public async Task<ActionResult<T>> Add(T entity)
-        {
-            var id = await _service.CreateAsync(entity);
-
-            return CreatedAtAction(nameof(GetById), new { id }, id);
-        }
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, T entity)

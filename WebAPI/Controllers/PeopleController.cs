@@ -5,7 +5,7 @@ using Services.Interfaces;
 namespace WebAPI.Controllers
 {
 
-    public class PeopleController : GenericController<Person>
+    public class PeopleController : GenericResourceController<Person>
     {
         private readonly IPeopleService _service;
         public PeopleController(IPeopleService service) : base(service)
@@ -30,10 +30,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetByName(string search)
+        public async Task<ActionResult<IEnumerable<Person>>> GetByName(string? search)
         {
-            var service = _service;
-            var people = await service.GetByNameAsync(search);
+            if (search is null)
+                return await Get();
+
+            var people = await _service.GetByNameAsync(search);
             return Ok(people);
         }
 

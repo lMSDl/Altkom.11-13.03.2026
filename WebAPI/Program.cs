@@ -15,6 +15,7 @@ builder.Services.AddSingleton<IGenericService<ShoppingList>, ShoppingListsServic
 builder.Services.AddSingleton<IPeopleService, PeopleService>();
 //udostępniamy serwis PeopleService jako implementację interfejsu IGenericService<Person>, dzięki czemu kontroler GenericController<Person> będzie mógł korzystać z metod tego serwisu do obsługi zapytań dotyczących osób
 builder.Services.AddTransient<IGenericService<Person>>(x => x.GetRequiredService<IPeopleService>());
+builder.Services.AddSingleton<IGenericService<Product>, GenericService<Product>>();
 
 var app = builder.Build();
 
