@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Services.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    public class ShoppingListController : ApiControllerBase
+    public class LegacyShoppingListController : BaseAreaController
     {
-        private readonly List<ShoppingList> _service;
+        private readonly IGenericService<ShoppingList> _service;
 
-        public ShoppingListController(List<ShoppingList> service)
+        public LegacyShoppingListController(IGenericService<ShoppingList> service)
         {
             _service = service;
         }
@@ -20,9 +21,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ShoppingList> GetShoppingListById(int id)
+        public async Task<ActionResult<ShoppingList>> GetShoppingListById(int id)
         {
-            var entity = _service.SingleOrDefault(x => x.Id == id);
+            var entity = await _service.ReadAsync(id);
             if (entity is null)
                 return NotFound();
 
@@ -30,40 +31,37 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        //public ActionResult<int> AddShoppingList(ShoppingList shoppingList)
-        public ActionResult<ShoppingList> AddShoppingList(ShoppingList shoppingList)
+        public async Task<ActionResult<int>> AddShoppingList(ShoppingList shoppingList)
+        //public async Task<ActionResult<ShoppingList>> AddShoppingList(ShoppingList shoppingList)
         {
-            shoppingList.Id = _service.Select(x => x.Id).DefaultIfEmpty().Max() + 1;
-            _service.Add(shoppingList);
+            var id = await _service.CreateAsync(shoppingList);
 
-            //return CreatedAtAction(nameof(GetShoppingListById), new { id = shoppingList.Id }, shoppingList.Id);
-            return CreatedAtAction(nameof(GetShoppingListById), new { id = shoppingList.Id }, shoppingList);
+            return CreatedAtAction(nameof(GetShoppingListById), new { id }, id);
+            //return CreatedAtAction(nameof(GetShoppingListById), new { id = shoppingList.Id }, shoppingList);
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult UpdateShoppingList(int id, ShoppingList shoppingList)
+        public async Task<ActionResult> UpdateShoppingList(int id, ShoppingList shoppingList)
         {
-            var existing = _service.SingleOrDefault(x => x.Id == id);
+            var existing = await _service.ReadAsync(id);
             if (existing is null)
             {
                 return NotFound();
             }
-            _service.Remove(existing);
-            shoppingList.Id = id;
-            _service.Add(shoppingList);
 
+            await _service.UpdateAsync(id, shoppingList);
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var existing = _service.SingleOrDefault(x => x.Id == id);
+            var existing = await _service.ReadAsync(id);
             if (existing is null)
             {
                 return NotFound();
             }
-            _service.Remove(existing);
+            await _service.DeleteAsync(id);
             return NoContent();
         }
 

@@ -1,4 +1,6 @@
 using Models;
+using Services.InMemory;
+using Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,11 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<List<int>>([.. Enumerable.Repeat(0, 100).Select(x => Random.Shared.Next())]);
 
-builder.Services.AddSingleton<List<ShoppingList>>([
-    new ShoppingList { Id = 1, Name = "Groceries" },
-    new ShoppingList { Id = 2, Name = "Hardware Store" },
-    new ShoppingList { Id = 3, Name = "Pharmacy" }
-    ]);
+builder.Services.AddSingleton<IGenericService<ShoppingList>, ShoppingListsService>();
+//builder.Services.AddSingleton<IGenericService<Person>, GenericService<Person>>();
+//builder.Services.AddSingleton<IGenericService<Person>, PeopleService>();
+builder.Services.AddSingleton<IPeopleService, PeopleService>();
+//udostępniamy serwis PeopleService jako implementację interfejsu IGenericService<Person>, dzięki czemu kontroler GenericController<Person> będzie mógł korzystać z metod tego serwisu do obsługi zapytań dotyczących osób
+builder.Services.AddTransient<IGenericService<Person>>(x => x.GetRequiredService<IPeopleService>());
 
 var app = builder.Build();
 
