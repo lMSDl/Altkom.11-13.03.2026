@@ -14,37 +14,57 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ShoppingList> GetShoppingList()
+        public ActionResult<IEnumerable<ShoppingList>> GetShoppingList()
         {
-            return _service;
+            return Ok(_service);
         }
 
         [HttpGet("{id}")]
-        public ShoppingList? GetShoppingListById(int id)
+        public ActionResult<ShoppingList> GetShoppingListById(int id)
         {
-            return _service.SingleOrDefault(x => x.Id == id);
+            var entity = _service.SingleOrDefault(x => x.Id == id);
+            if (entity is null)
+                return NotFound();
+
+            return Ok(entity);
         }
 
         [HttpPost]
-        public int AddShoppingList(ShoppingList shoppingList)
+        //public ActionResult<int> AddShoppingList(ShoppingList shoppingList)
+        public ActionResult<ShoppingList> AddShoppingList(ShoppingList shoppingList)
         {
             shoppingList.Id = _service.Select(x => x.Id).DefaultIfEmpty().Max() + 1;
             _service.Add(shoppingList);
 
-            return shoppingList.Id;
+            //return CreatedAtAction(nameof(GetShoppingListById), new { id = shoppingList.Id }, shoppingList.Id);
+            return CreatedAtAction(nameof(GetShoppingListById), new { id = shoppingList.Id }, shoppingList);
         }
 
         [HttpPut("{id:int}")]
-        public void UpdateShoppingList(int id, ShoppingList shoppingList)
+        public ActionResult UpdateShoppingList(int id, ShoppingList shoppingList)
         {
             var existing = _service.SingleOrDefault(x => x.Id == id);
             if (existing is null)
             {
-                return;
+                return NotFound();
             }
             _service.Remove(existing);
             shoppingList.Id = id;
             _service.Add(shoppingList);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var existing = _service.SingleOrDefault(x => x.Id == id);
+            if (existing is null)
+            {
+                return NotFound();
+            }
+            _service.Remove(existing);
+            return NoContent();
         }
 
     }
