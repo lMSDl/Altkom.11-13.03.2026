@@ -1,0 +1,21 @@
+﻿@WebAPI_HostAddress = http://localhost:5114
+
+GET {{WebAPI_HostAddress}}/api/values
+
+###
+
+@value=0
+POST {{WebAPI_HostAddress}}/api/Values/{{value}}
+
+###
+
+@oldValue=0
+PUT {{WebAPI_HostAddress}}/api/Values/{{oldValue}}
+
+###
+
+@oldValue=0
+@newValue=0
+PUT {{WebAPI_HostAddress}}/api/values/{{oldValue}}?newValue={{newValue}}
+
+###
