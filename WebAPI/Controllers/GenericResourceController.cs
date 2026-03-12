@@ -23,9 +23,17 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<int>> Add(T entity)
+        public virtual async Task<ActionResult<int>> Add(T entity)
         //public async Task<ActionResult<T>> Add(T entity)
         {
+
+            //ręcznie sprawdzenie czy model jest poprawny, ponieważ [ApiController] automatycznie zwraca 400 Bad Request, jeśli model jest niepoprawny, ale w tym przypadku chcemy zwrócić 400 z informacją o błędach walidacji
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
             var id = await _service.CreateAsync(entity);
 
             return CreatedAtAction(nameof(GetById), new { id }, id);

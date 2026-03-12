@@ -1,4 +1,5 @@
 using Bogus;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.Bogus;
 using Services.Bogus.Fakers;
@@ -64,7 +65,8 @@ builder.Services.AddOptions<BogusConfig>()
     .Validate(x => x.NumberOfNestedResources > 0, "NumberOfNestedResources must be greater than 0")
     .ValidateOnStart();
 
-
+//zawieszenie automatycznej walidacji modelu, dzięki czemu będziemy mogli sami zdecydować, kiedy i jak chcemy walidować dane wejściowe w naszych kontrolerach, co daje nam większą kontrolę nad procesem walidacji i pozwala na bardziej elastyczne podejście do obsługi błędów walidacji
+builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
 
 
 var app = builder.Build();

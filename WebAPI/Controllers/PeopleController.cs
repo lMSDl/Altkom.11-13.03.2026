@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Models;
 using Services.Interfaces;
 
@@ -45,6 +46,22 @@ namespace WebAPI.Controllers
         public override Task<ActionResult> Delete(int id)
         {
             return base.Delete(id);
+        }
+
+        public override async Task<ActionResult<int>> Add(Person entity)
+        {
+            //odfiltrowanie błędów walidacji związanych z właściwością Parent, ponieważ chcemy umożliwić dodawanie osób bez konieczności podawania rodzica, a jednocześnie nie chcemy, żeby błędy walidacji związane z tą właściwością blokowały dodawanie nowych osób
+            ModelState.RemoveAll<Person>(x => x.Parent);
+
+            //dodanie błędu o tym, że osoba o takim imieniu i nazwisku już istnieje, jeśli metoda GetByNameAsync zwróci jakieś osoby, które mają takie samo imię i nazwisko jak osoba, którą chcemy dodać do bazy danych. Dzięki temu użytkownik będzie wiedział, że nie może dodać osoby o takim samym imieniu i nazwisku, co już istniejąca osoba w bazie danych
+            var people = await _service.GetByNameAsync(entity.FullName);
+            if(people.Any())
+            {
+                ModelState.AddModelError(nameof(entity.FullName), "Osoba o takim imieniu i nazwisku już istnieje.");
+            }
+
+
+            return await base.Add(entity);
         }
     }
 }
