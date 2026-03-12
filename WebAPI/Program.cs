@@ -17,7 +17,7 @@ builder.WebHost.ConfigureKestrel(x =>
 {
     x.ConfigureHttpsDefaults(httpsOptions =>
     {
-        httpsOptions. = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
+        httpsOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
     });
 });
 
@@ -94,6 +94,8 @@ builder.Services.AddResponseCompression(x =>
     x.EnableForHttps = true;
 });
 
+builder.Services.AddOpenApi("contract");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -101,5 +103,9 @@ var app = builder.Build();
 app.UseResponseCompression();
 
 app.MapControllers();
+
+app.MapOpenApi();
+
+app.UseSwaggerUI(x => x.SwaggerEndpoint("/openapi/contract.json", "V1"));
 
 app.Run();

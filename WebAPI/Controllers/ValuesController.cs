@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers
 {
     //adnotacje [Route("api/[controller]")] i [ApiController] są dziedziczone z ApiControllerBase, więc nie musimy ich powtarzać w każdym kontrolerze
+    
     public class ValuesController : ApiControllerBase
     {
         private readonly List<int> _values;
@@ -20,6 +21,7 @@ namespace WebAPI.Controllers
             return _values.ToArray();
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete] //domyślny route template to "api/values", więc jeśli nie podamy żadnego, to będzie on używany
         [HttpDelete("path/{value:int}")] //jeśli podamy route template, to będzie on używany zamiast domyślnego, więc endpoint będzie api/values/path/{value}
         [HttpDelete("/wartosci/{value:int}")] //jeśli podamy route template zaczynający się od "/", to będzie on traktowany jako absolutny, więc endpoint będzie /wartosci/{value} bez prefiksu api/values

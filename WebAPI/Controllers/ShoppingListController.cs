@@ -5,6 +5,8 @@ using Services.Interfaces;
 
 namespace WebAPI.Controllers
 {
+    //wyłączenie z OpenAPI tego kontrolera, ponieważ jest to kontroler, który został stworzony na potrzeby testów i nie chcemy, żeby był dostępny dla klientów API, którzy korzystają z dokumentacji OpenAPI do poznawania dostępnych endpointów w naszym API 
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class LegacyShoppingListController : BaseAreaController
     {
         private readonly IGenericService<ShoppingList> _service;

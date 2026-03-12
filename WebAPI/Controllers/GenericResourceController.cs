@@ -21,6 +21,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public virtual async Task<ActionResult<IEnumerable<T>>> Get()
         {
             return Ok(await _service.ReadAsync());
@@ -29,6 +30,8 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [ServiceFilter<ConsoleFilter>]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<ActionResult<int>> Add(T entity)
         //public async Task<ActionResult<T>> Add(T entity)
         {

@@ -19,6 +19,8 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult<IEnumerable<T>>> Get(int parentId)
         {
             var parentEntity = await _parentService.ReadAsync(parentId);
@@ -36,6 +38,8 @@ namespace WebAPI.Controllers
         protected abstract void SetParentId(T entity, int parentId);
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> Add(int parentId, T entity)
         {
             var parentEntity = await _parentService.ReadAsync(parentId);
