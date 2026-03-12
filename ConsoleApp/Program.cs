@@ -1,4 +1,5 @@
 ﻿
+using ConsoleApp;
 using Models;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
@@ -62,4 +63,16 @@ using (StringContent content = new(JsonConvert.SerializeObject(item), System.Tex
 }
 
 
-    Console.ReadLine();
+
+var webApiClient = new WebApiClient("http://localhost:5114/api/");
+items = await webApiClient.GetAsync<IEnumerable<ShoppingList>>("ShoppingLists");
+
+await webApiClient.DeleteAsync("ShoppingLists", 2);
+
+await webApiClient.PostAsync("ShoppingLists", new ShoppingList()
+{
+    Name = "Nowa lista zakupów",
+});
+
+Console.ReadLine();
+
