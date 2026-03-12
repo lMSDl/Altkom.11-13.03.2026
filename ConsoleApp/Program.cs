@@ -7,7 +7,7 @@ using System.Text.Json;
 
 HttpClient httpClient = new HttpClient();
 
-httpClient.BaseAddress = new Uri("http://localhost:5114/api/");
+httpClient.BaseAddress = new Uri("https://localhost:5114/api/");
 
 httpClient.DefaultRequestHeaders.Accept.Clear();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -64,7 +64,7 @@ using (StringContent content = new(JsonConvert.SerializeObject(item), System.Tex
 
 
 
-var webApiClient = new WebApiClient("http://localhost:5114/api/");
+var webApiClient = new WebApiClient("https://localhost:5114/api/");
 items = await webApiClient.GetAsync<IEnumerable<ShoppingList>>("ShoppingLists");
 
 await webApiClient.DeleteAsync("ShoppingLists", 2);

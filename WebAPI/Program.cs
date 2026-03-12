@@ -13,6 +13,14 @@ using WebAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(x =>
+{
+    x.ConfigureHttpsDefaults(httpsOptions =>
+    {
+        httpsOptions. = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers()
@@ -83,6 +91,7 @@ builder.Services.AddResponseCompression(x =>
     x.Providers.Clear();
     x.Providers.Add<GzipCompressionProvider>();
     x.Providers.Add<BrotliCompressionProvider>();
+    x.EnableForHttps = true;
 });
 
 var app = builder.Build();
