@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Models/Models.csproj" Id="140c2906-01e3-41c2-b3c7-60e520550d05" />
+  <Project Path="Services.Bogus/Services.Bogus.csproj" Id="ddd149cd-b3fb-42d4-bfd2-6797c3cfd358" />
   <Project Path="Services.InMemory/Services.InMemory.csproj" Id="73ede9ec-f450-46f2-ac1c-8aed883dc911" />
   <Project Path="Services.Interfaces/Services.Interfaces.csproj" Id="349e2db6-fda5-4ee9-b7d6-737a8793d20e" />
   <Project Path="WebAPI/WebAPI.csproj" Id="d916e1ae-2a55-4695-a743-630a0fc391dd" />
