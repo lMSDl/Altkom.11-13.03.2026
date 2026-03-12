@@ -6,16 +6,16 @@ namespace Services.InMemory
     public class GenericService<T> : IGenericService<T> where T : Entity
     {
 
-        protected readonly ICollection<T> _entities;
+        protected readonly IList<T> _entities;
 
         public GenericService()
         {
-            _entities = new HashSet<T>();
+            _entities = new List<T>();
         }
 
         protected GenericService(ICollection<T> entities)
         {
-            _entities = entities;
+            _entities = entities.ToList();
         }
 
         public Task<int> CreateAsync(T entity)

@@ -9,6 +9,16 @@ namespace Services.Bogus
     {
         public BogusPeopleService(Faker<Models.Person> faker, IOptions<BogusConfig> options) : base(faker.Generate(options.Value.NumberOfResources))
         {
+
+            for (int i = 1; i < _entities.Count - 5; i++)
+            {
+                int parentIndex = Random.Shared.Next(0, i);
+                var child = _entities[i];
+                var parent = _entities[parentIndex];
+                child.Parent = parent;
+                parent.Children.Add(child);
+            }
+
         }
     }
 }

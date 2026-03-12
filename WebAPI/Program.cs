@@ -4,12 +4,31 @@ using Services.Bogus;
 using Services.Bogus.Fakers;
 using Services.InMemory;
 using Services.Interfaces;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    /*.AddJsonOptions(x =>
+    {
+        x.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
+        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault | JsonIgnoreCondition.Always;
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    })*/
+    .AddNewtonsoftJson(x =>
+    {
+        x.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+        x.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
+        x.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+    })
+    //obsługa xml - Accept klienta musi być ustawiony na application/xml
+    .AddXmlDataContractSerializerFormatters();
+
+
+
+
 builder.Services.AddSingleton<List<int>>([.. Enumerable.Repeat(0, 100).Select(x => Random.Shared.Next())]);
 
 //builder.Services.AddSingleton<IGenericService<ShoppingList>, ShoppingListsService>();
@@ -44,6 +63,9 @@ builder.Services.AddOptions<BogusConfig>()
     .Validate(x => x.NumberOfResources > 0, "NumberOfResources must be greater than 0")
     .Validate(x => x.NumberOfNestedResources > 0, "NumberOfNestedResources must be greater than 0")
     .ValidateOnStart();
+
+
+
 
 var app = builder.Build();
 
