@@ -74,5 +74,10 @@ await webApiClient.PostAsync("ShoppingLists", new ShoppingList()
     Name = "Nowa lista zakupów",
 });
 
+var httpApiClient = new HttpClient();
+var client = new ConsoleApp.API.ApiClient(httpApiClient);
+
+var products = await client.ProductsAllAsync(3);
+
 Console.ReadLine();
 
