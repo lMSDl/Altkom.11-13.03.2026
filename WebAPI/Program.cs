@@ -1,6 +1,7 @@
 using Bogus;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Models;
 using Services.Bogus;
 using Services.Bogus.Fakers;
@@ -77,11 +78,18 @@ builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidF
 builder.Services.AddScoped<IValidator<ShoppingList>, ShoppingListValidator>();
 builder.Services.AddTransient<ConsoleFilter>();
 
+builder.Services.AddResponseCompression(x =>
+{
+    x.Providers.Clear();
+    x.Providers.Add<GzipCompressionProvider>();
+    x.Providers.Add<BrotliCompressionProvider>();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseAuthorization();
+app.UseResponseCompression();
 
 app.MapControllers();
 
