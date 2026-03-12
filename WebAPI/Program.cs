@@ -13,7 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<List<int>>([.. Enumerable.Repeat(0, 100).Select(x => Random.Shared.Next())]);
 
 //builder.Services.AddSingleton<IGenericService<ShoppingList>, ShoppingListsService>();
-builder.Services.AddSingleton<IGenericService<ShoppingList>, BogusGenericService<ShoppingList>>();
+//builder.Services.AddSingleton<IGenericService<ShoppingList>, BogusGenericService<ShoppingList>>();
+builder.Services.AddSingleton<IGenericService<ShoppingList>>(x => new BogusGenericService<ShoppingList>(
+                                            x.GetRequiredService<Faker<ShoppingList>>(),
+                                            //ręcznie wstrzykiwanie konfiguracji do serwisu BogusGenericService, dzięki czemu możemy łatwo zarządzać liczbą generowanych zasobów poprzez zmianę wartości w pliku konfiguracyjnym, bez konieczności modyfikowania kodu serwisu
+                                            x.GetRequiredService<IConfiguration>().GetValue<int>("Bogus:NumberOfResources")   ));
 //builder.Services.AddSingleton<IGenericService<Person>, GenericService<Person>>();
 //builder.Services.AddSingleton<IGenericService<Person>, PeopleService>();
 //builder.Services.AddSingleton<IPeopleService, PeopleService>();
@@ -21,11 +25,25 @@ builder.Services.AddSingleton<IPeopleService, BogusPeopleService>();
 //udostępniamy serwis PeopleService jako implementację interfejsu IGenericService<Person>, dzięki czemu kontroler GenericController<Person> będzie mógł korzystać z metod tego serwisu do obsługi zapytań dotyczących osób
 builder.Services.AddTransient<IGenericService<Models.Person>>(x => x.GetRequiredService<IPeopleService>());
 //builder.Services.AddSingleton<IGenericService<Product>, GenericService<Product>>();
-builder.Services.AddSingleton<IGenericService<Product>, BogusGenericService<Product>>();
+builder.Services.AddSingleton<IGenericService<Product>>(x => new BogusGenericService<Product>(
+                                            x.GetRequiredService<Faker<Product>>(),
+                                            x.GetRequiredService<IConfiguration>().GetSection("Bogus").GetValue<int>("NumberOfNestedResources")));
 
 builder.Services.AddTransient<Faker<Models.Person>, PersonFaker>();
 builder.Services.AddTransient<Faker<ShoppingList>, ShoppingListFaker>();
 builder.Services.AddTransient<Faker<Product>, ProductFaker>();
+
+//wstrzykiwanie konfiguracji przez binding
+builder.Services.AddTransient<BogusConfig>(x => x.GetRequiredService<IConfiguration>().GetSection("Bogus").Get<BogusConfig>()!);
+
+//wstrzykiwanie konfiguracji przez IOptions
+builder.Services.AddOptions<BogusConfig>()
+    .Bind(builder.Configuration.GetSection("Bogus"))
+    //możliwa walidacja danych z konfiguracji, która pozwala na wczesne wykrycie błędów w konfiguracji, zanim aplikacja zacznie działać. Dzięki temu możemy mieć pewność, że nasza aplikacja będzie działać poprawnie i nie napotka problemów związanych z nieprawidłową konfiguracją podczas działania
+    .ValidateDataAnnotations()
+    .Validate(x => x.NumberOfResources > 0, "NumberOfResources must be greater than 0")
+    .Validate(x => x.NumberOfNestedResources > 0, "NumberOfNestedResources must be greater than 0")
+    .ValidateOnStart();
 
 var app = builder.Build();
 

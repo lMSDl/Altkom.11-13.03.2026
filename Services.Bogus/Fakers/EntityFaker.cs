@@ -5,7 +5,7 @@ namespace Services.Bogus.Fakers
 {
     public class EntityFaker<T> : Faker<T> where T : Entity
     {
-        public EntityFaker() : base("pl")
+        public EntityFaker(string lang) : base(lang)
         {
             RuleFor(e => e.Id, f => f.IndexFaker + 1);
         }

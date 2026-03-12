@@ -6,7 +6,7 @@ namespace Services.Bogus.Fakers
 {
     public class ShoppingListFaker : EntityFaker<Models.ShoppingList>
     {
-        public ShoppingListFaker() : base()
+        public ShoppingListFaker(BogusConfig bogusConfig) : base(bogusConfig.Language)
         { 
         
             RuleFor(x => x.Name, f => f.Commerce.ProductName());

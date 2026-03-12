@@ -2,12 +2,12 @@
 {
     public class ProductFaker : EntityFaker<Models.Product>
     {
-        public ProductFaker() : base()
+        public ProductFaker(BogusConfig bogusConfig) : base(bogusConfig.Language)
         {
             RuleFor(p => p.Name, f => f.Commerce.ProductName());
             RuleFor(p => p.Price, f => f.Finance.Amount(1, 1000));
             RuleFor(p => p.Quantity, f => f.Random.Int(1, 100));
-            RuleFor(p => p.ShoppingListId, f => f.Random.Int(1, 10));
+            RuleFor(p => p.ShoppingListId, f => f.Random.Int(1, bogusConfig.NumberOfResources));
         }
     }
 }
