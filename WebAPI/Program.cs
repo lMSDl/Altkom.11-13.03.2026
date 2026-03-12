@@ -21,12 +21,12 @@ builder.Services.AddControllers()
         x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault | JsonIgnoreCondition.Always;
         x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     })*/
-    .AddNewtonsoftJson(x =>
+    /*.AddNewtonsoftJson(x =>
     {
         x.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
         x.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
         x.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
-    })
+    })*/
     //obsługa xml - Accept klienta musi być ustawiony na application/xml
     .AddXmlDataContractSerializerFormatters();
 
