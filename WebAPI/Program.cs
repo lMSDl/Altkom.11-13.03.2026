@@ -7,6 +7,7 @@ using Services.Bogus.Fakers;
 using Services.InMemory;
 using Services.Interfaces;
 using System.Text.Json.Serialization;
+using WebAPI.Filters;
 using WebAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +75,7 @@ builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidF
 //builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddScoped<IValidator<ShoppingList>, ShoppingListValidator>();
+builder.Services.AddTransient<ConsoleFilter>();
 
 var app = builder.Build();
 

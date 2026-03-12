@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Models;
 using Services.Interfaces;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
 
+    [ServiceFilter<ConsoleFilter>]
     public class PeopleController : GenericResourceController<Person>
     {
         private readonly IPeopleService _service;

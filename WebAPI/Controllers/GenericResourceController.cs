@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.Interfaces;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
@@ -27,6 +28,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
+        [ServiceFilter<ConsoleFilter>]
         public virtual async Task<ActionResult<int>> Add(T entity)
         //public async Task<ActionResult<T>> Add(T entity)
         {
@@ -35,19 +37,19 @@ namespace WebAPI.Controllers
                 var validationResult = await _validator.ValidateAsync(entity);
                 if (!validationResult.IsValid)
                 {
-                    /*foreach (var error in validationResult.Errors)
+                    foreach (var error in validationResult.Errors)
                     {
                         ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }*/
-                    return BadRequest(validationResult.ToDictionary());
+                    }
+                    //return BadRequest(validationResult.ToDictionary());
                 }
             }
 
             //ręcznie sprawdzenie czy model jest poprawny, ponieważ [ApiController] automatycznie zwraca 400 Bad Request, jeśli model jest niepoprawny, ale w tym przypadku chcemy zwrócić 400 z informacją o błędach walidacji
-           /* if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }*/
+            }
 
 
             var id = await _service.CreateAsync(entity);
