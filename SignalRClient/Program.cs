@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 var signalR = new HubConnectionBuilder()
     .WithUrl("http://localhost:5105/demohub")
+    .WithAutomaticReconnect()
         .Build();
 
 signalR.On<string>("HelloMessage", message =>
@@ -12,6 +13,18 @@ signalR.On<string>("HelloMessage", message =>
 });
 signalR.On<string>(nameof(UserConnected), UserConnected);
 signalR.On<DemoRecord>("ReceiveDemo", ReadDemoRecord);
+
+signalR.Reconnected += connectionId =>
+{
+    Console.WriteLine($"Reconnected with connection ID: {connectionId}");
+    return Task.CompletedTask;
+};
+
+signalR.Reconnecting += error =>
+{
+    Console.WriteLine($"Reconnecting due to error: {error?.Message}");
+    return Task.CompletedTask;
+};
 
 await signalR.StartAsync();
 
