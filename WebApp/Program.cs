@@ -2,10 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 //miejsce na dodanie usług do kontenera DI, np. builder.Services.AddControllers();
 
 
-
-
 //budowanie potoku przetwarzania żądań HTTP, czyli dodawanie middleware'ów do potoku
 var app = builder.Build();
+
+
 
 //gdzieś na początku (niejawnie) znajduje się middleware obsługujący routing do endpointów
 //app.UseRouting();

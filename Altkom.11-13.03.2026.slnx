@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/WindowsServices/">
+    <Project Path="DotNet/DotNet.csproj" Id="06f1a916-faa3-4f8d-b592-4428f2a2ec70" />
+    <Project Path="Microsoft/Microsoft.csproj" Id="875aa7ea-200b-4243-a57f-67c3eb51f48c" />
+    <Project Path="TopShelfService/TopShelfService.csproj" Id="c8014097-72b1-4874-83c6-c3a1c0a5e13c" />
+  </Folder>
   <Project Path="ConsoleApp/ConsoleApp.csproj" Id="c4caa4fd-d813-463b-a18d-5a2c0b8ed5b8" />
   <Project Path="GrpcClient/GrpcClient.csproj" Id="bd5da350-c11e-47de-afa2-c1c553529c1a" />
   <Project Path="GrpcService/GrpcService.csproj" Id="3a64ccd1-c729-4c08-b097-8c557353cb97" />
