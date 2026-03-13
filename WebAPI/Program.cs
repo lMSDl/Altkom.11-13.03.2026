@@ -9,6 +9,7 @@ using Services.InMemory;
 using Services.Interfaces;
 using System.Text.Json.Serialization;
 using WebAPI.Filters;
+using WebAPI.Hubs;
 using WebAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -95,6 +96,7 @@ builder.Services.AddResponseCompression(x =>
 });
 
 builder.Services.AddOpenApi("contract");
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -107,5 +109,7 @@ app.MapControllers();
 app.MapOpenApi();
 
 app.UseSwaggerUI(x => x.SwaggerEndpoint("/openapi/contract.json", "V1"));
+
+app.MapHub<ValuesHub>("/SignalR/values");
 
 app.Run();

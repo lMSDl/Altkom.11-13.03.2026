@@ -7,6 +7,7 @@
   <Project Path="Services.Interfaces/Services.Interfaces.csproj" Id="349e2db6-fda5-4ee9-b7d6-737a8793d20e" />
   <Project Path="SignalR/SignalR.csproj" Id="fc94a69e-5d40-4fa2-b785-89fa12896274" />
   <Project Path="SignalRClient/SignalRClient.csproj" Id="ddabc88b-2a45-4108-ac80-89ebd0e5bb9e" />
+  <Project Path="SignalRValuesClient/SignalRValuesClient.csproj" Id="5ef6cfdd-da56-4c48-9671-557d90215648" />
   <Project Path="WebAPI/WebAPI.csproj" Id="d916e1ae-2a55-4695-a743-630a0fc391dd" />
   <Project Path="WebApp/WebApp.csproj" />
   <Project Path="WebMinimalApi/WebMinimalApi.csproj" Id="4e02e24c-cd1f-4122-99ac-7df423eb5a5c" />
