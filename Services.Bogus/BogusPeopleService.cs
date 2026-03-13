@@ -7,9 +7,8 @@ namespace Services.Bogus
 {
     public class BogusPeopleService : PeopleService
     {
-        public BogusPeopleService(Faker<Models.Person> faker, IOptions<BogusConfig> options) : base(faker.Generate(options.Value.NumberOfResources))
+        public BogusPeopleService(Faker<Models.Person> faker, int numberOfResources) : base(faker.Generate(numberOfResources))
         {
-
             for (int i = 1; i < _entities.Count - 5; i++)
             {
                 int parentIndex = Random.Shared.Next(0, i);
@@ -18,6 +17,11 @@ namespace Services.Bogus
                 child.Parent = parent;
                 parent.Children.Add(child);
             }
+        }
+        public BogusPeopleService(Faker<Models.Person> faker, IOptions<BogusConfig> options) : this(faker, options.Value.NumberOfResources)
+        {
+
+            
 
         }
     }

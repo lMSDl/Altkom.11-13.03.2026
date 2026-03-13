@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="ConsoleApp/ConsoleApp.csproj" Id="c4caa4fd-d813-463b-a18d-5a2c0b8ed5b8" />
+  <Project Path="GrpcClient/GrpcClient.csproj" Id="bd5da350-c11e-47de-afa2-c1c553529c1a" />
+  <Project Path="GrpcService/GrpcService.csproj" Id="3a64ccd1-c729-4c08-b097-8c557353cb97" />
   <Project Path="Models/Models.csproj" Id="140c2906-01e3-41c2-b3c7-60e520550d05" />
   <Project Path="OWIN/OWIN.csproj" Id="86c1f155-82f9-425b-9cbe-c8ceee2ffec9" />
   <Project Path="Services.Bogus/Services.Bogus.csproj" Id="ddd149cd-b3fb-42d4-bfd2-6797c3cfd358" />

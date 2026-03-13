@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package GrpsService.PeopleProto;
+
+option csharp_namespace = "GrpcService.Protos.PeopleProto";
+
+import "google/protobuf/empty.proto";
+
+service PeopleGrpcService {
+	rpc Create(Person) returns (Id);
+	rpc Read(Void) returns (People);
+	rpc ReadById(Id) returns (OptionalPerson);
+	rpc Update(Person) returns (google.protobuf.Empty);
+	rpc Delete(Id) returns (Void);
+}
+
+message Void {
+}
+
+message Person {
+	int32 id = 1;
+	string firstName = 2;
+	string lastName = 3;
+}
+
+message OptionalPerson {
+	oneof result {
+		Person person = 1;
+		Void empty = 2;
+	}
+}
+
+message Id {
+	int32 id = 1;
+}
+
+message People {
+	repeated Person collection = 1;
+}
